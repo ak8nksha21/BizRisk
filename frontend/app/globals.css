@@ -1,0 +1,475 @@
+:root {
+  /* Warm, premium light surface -- never pure white for the page itself,
+     so true-white cards read as elevated. */
+  --bg: #f7f5f1;
+  --bg-subtle: #f1efe9;
+
+  --card: #ffffff;
+  --panel-bg: #ffffff;
+  --panel-border: #e6e3dc;
+  --panel-border-strong: #d8d4c9;
+
+  --surface: #faf9f6;
+  --surface-hover: #f2efe8;
+
+  --foreground: #24221f;
+  --foreground-muted: #6b675f;
+  --foreground-subtle: #8c8880;
+
+  /* Sophisticated purple -- primary brand accent (never blue). */
+  --primary: #6b3fa0;
+  --primary-hover: #5a3486;
+  --primary-tint: rgba(107, 63, 160, 0.1);
+  --primary-glow: rgba(107, 63, 160, 0.18);
+
+  /* Gold / amber -- secondary accent. */
+  --secondary: #b8862e;
+  --secondary-tint: rgba(184, 134, 46, 0.12);
+
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+
+  /* Risk / decision ladder -- consistent across risk level and merchant
+     decision everywhere in the product. */
+  --risk-low: #1f8a53;
+  --risk-low-glow: rgba(31, 138, 83, 0.14);
+  --risk-moderate: #b8862e;
+  --risk-moderate-glow: rgba(184, 134, 46, 0.14);
+  --risk-high: #c1652b;
+  --risk-high-glow: rgba(193, 101, 43, 0.14);
+  --risk-very-high: #b13434;
+  --risk-very-high-glow: rgba(177, 52, 52, 0.14);
+  --risk-unknown: #8c8880;
+
+  --success: #1f8a53;
+  --warning: #b8862e;
+  --danger-high: #c1652b;
+  --danger-critical: #b13434;
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+html, body {
+  height: 100%;
+  width: 100%;
+  background: var(--bg);
+  color: var(--foreground);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+h1, h2, h3, h4 {
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--foreground);
+}
+
+/* Clean elevated card -- no blur, no glass effect. */
+.glass-panel {
+  background: var(--card);
+  border: 1px solid var(--panel-border);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 1px 2px rgba(36, 34, 31, 0.04), 0 8px 24px -12px rgba(36, 34, 31, 0.12);
+}
+
+/* Small-caps section eyebrow, used to add visual hierarchy above a heading */
+.eyebrow {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--foreground-muted);
+}
+
+/* De-emphasized identifier chip (case IDs / UUIDs): keeps the value available
+   without letting it visually compete with actual business content. */
+.id-chip {
+  display: inline-flex;
+  align-items: center;
+  font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+  font-size: 11.5px;
+  color: var(--foreground-muted);
+  background: var(--surface);
+  border: 1px solid var(--panel-border);
+  padding: 2px 8px;
+  border-radius: 999px;
+  letter-spacing: 0.2px;
+  white-space: nowrap;
+}
+
+/* Secondary / ghost action button, for controls that must not compete with
+   the primary call-to-action on a page. */
+.btn-ghost {
+  background: var(--card);
+  border: 1px solid var(--panel-border-strong);
+  color: var(--foreground);
+  font-weight: 600;
+  box-shadow: none;
+}
+
+.btn-ghost:hover:not(:disabled) {
+  background: var(--surface-hover);
+  transform: none;
+  box-shadow: none;
+}
+
+/* Gold secondary CTA -- for a prominent action that must not compete with
+   the primary purple action next to it. */
+.btn-gold {
+  background: var(--secondary);
+  color: #fff;
+}
+
+.btn-gold:hover:not(:disabled) {
+  background: #9c7128;
+  box-shadow: 0 6px 16px rgba(184, 134, 46, 0.3);
+}
+
+/* Common form elements */
+input, select, textarea {
+  background: #ffffff;
+  border: 1px solid var(--panel-border-strong);
+  color: var(--foreground);
+  padding: 12px 16px;
+  border-radius: var(--radius-sm);
+  font-size: 15px;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+input::placeholder, textarea::placeholder {
+  color: var(--foreground-subtle);
+}
+
+input:focus, select:focus, textarea:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px var(--primary-glow);
+}
+
+button {
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  padding: 12px 24px;
+  font-size: 15px;
+  font-weight: 600;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  box-shadow: 0 1px 2px rgba(36, 34, 31, 0.15);
+}
+
+button:hover:not(:disabled) {
+  background: var(--primary-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(107, 63, 160, 0.25);
+}
+
+button:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Subtle hover affordance for scannable data-table rows */
+.row-hover {
+  transition: background-color 0.15s ease;
+}
+
+.row-hover:hover {
+  background-color: var(--surface-hover);
+}
+
+/* Investigation detail: main content + a narrower right-side sidebar.
+   Single column (sidebar stacks below, in DOM order) below the breakpoint;
+   a real two-column split with a sticky sidebar above it. */
+.detail-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 28px;
+  align-items: start;
+}
+
+@media (min-width: 960px) {
+  .detail-grid {
+    grid-template-columns: minmax(0, 1fr) 340px;
+  }
+
+  .detail-sidebar-sticky {
+    position: sticky;
+    top: 24px;
+  }
+}
+
+/* Primary app navigation: a full labeled rail on desktop; collapses to a
+   narrow icon-only rail on small screens so page content (including the
+   .detail-grid above) actually gets the width to stack/read correctly,
+   instead of being squeezed into a sliver next to a full-width sidebar. */
+.sidebar-label-collapsed-only {
+  display: none;
+}
+
+@media (max-width: 720px) {
+  .app-sidebar {
+    width: 64px !important;
+    padding: 20px 8px !important;
+  }
+
+  .app-sidebar .sidebar-label {
+    display: none;
+  }
+
+  .app-sidebar .sidebar-label-collapsed-only {
+    display: inline;
+  }
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--panel-border);
+  border-top-color: var(--primary);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+
+.skeleton {
+  background: var(--panel-border-strong);
+  animation: pulse 1.5s infinite ease-in-out;
+  border-radius: 4px;
+}
+
+/* ============================================================
+   Landing page -- scoped utilities. Nothing here is referenced
+   by the authenticated app (dashboard/investigate/investigation
+   detail), so it cannot affect those pages.
+   ============================================================ */
+
+.landing-page {
+  width: 100%;
+}
+
+/* Fine background grid, used behind the hero and a couple of other
+   sections for a subtle "data infrastructure" texture. */
+.landing-grid-bg {
+  background-image:
+    linear-gradient(rgba(107, 63, 160, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(107, 63, 160, 0.06) 1px, transparent 1px);
+  background-size: 42px 42px;
+  -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 0%, #000 40%, transparent 85%);
+  mask-image: radial-gradient(ellipse 70% 60% at 50% 0%, #000 40%, transparent 85%);
+}
+
+.landing-gradient-text {
+  background-image: linear-gradient(100deg, var(--primary) 0%, #8b5cc7 55%, var(--secondary) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Scroll-in reveal: fade + slide-up, applied by the ScrollReveal wrapper. */
+.landing-reveal {
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1), transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.landing-reveal-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .landing-reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+.landing-navbar {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  background: rgba(247, 245, 241, 0.78);
+  border-bottom: 1px solid var(--panel-border);
+  transition: padding 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+.landing-navbar-scrolled {
+  box-shadow: 0 1px 2px rgba(36, 34, 31, 0.05), 0 8px 24px -16px rgba(36, 34, 31, 0.12);
+}
+
+@keyframes landingMobileMenuIn {
+  from { opacity: 0; transform: translateY(-6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.landing-mobile-menu {
+  animation: landingMobileMenuIn 0.16s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .landing-mobile-menu { animation: none; }
+}
+
+/* Dark contrast section (Risk Intelligence): near-black charcoal with a
+   soft ambient purple/gold glow, never pure black. */
+.landing-dark-section {
+  position: relative;
+  background:
+    radial-gradient(circle at 15% -10%, rgba(139, 92, 199, 0.28), transparent 55%),
+    radial-gradient(circle at 85% 110%, rgba(184, 134, 46, 0.12), transparent 55%),
+    #15111c;
+  color: #f3f0f8;
+  overflow: hidden;
+}
+
+.landing-dark-card {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: var(--radius-lg);
+}
+
+/* Animated dashed connector lines used in the pipeline / workflow sections. */
+@keyframes landingFlowPulse {
+  from { background-position: 0 0; }
+  to { background-position: 24px 0; }
+}
+
+@keyframes landingFlowPulseVertical {
+  from { background-position: 0 0; }
+  to { background-position: 0 24px; }
+}
+
+.landing-connector {
+  background-image: repeating-linear-gradient(90deg, var(--primary) 0 8px, transparent 8px 18px);
+  background-size: 18px 2px;
+  animation: landingFlowPulse 1.1s linear infinite;
+  opacity: 0.55;
+}
+
+.landing-connector-vertical {
+  background-image: repeating-linear-gradient(180deg, var(--primary) 0 8px, transparent 8px 18px);
+  background-size: 2px 18px;
+  animation: landingFlowPulseVertical 1.1s linear infinite;
+  opacity: 0.55;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .landing-connector, .landing-connector-vertical {
+    animation: none;
+    opacity: 0.35;
+  }
+}
+
+.landing-card-hover {
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.landing-card-hover:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 44px -20px rgba(107, 63, 160, 0.28);
+  border-color: rgba(107, 63, 160, 0.28);
+}
+
+@keyframes landingFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
+}
+
+.landing-float {
+  animation: landingFloat 6.5s ease-in-out infinite;
+}
+
+.landing-float-delay {
+  animation-delay: 2.1s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .landing-float { animation: none; }
+}
+
+/* Pipeline / workflow rows: vertical timeline on narrow screens, a real
+   horizontal flow with connector lines from the breakpoint up. */
+.landing-flow-row {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0;
+}
+
+.landing-flow-connector-h { display: none; }
+.landing-flow-connector-v { display: block; }
+
+@media (min-width: 900px) {
+  .landing-flow-row {
+    flex-direction: row;
+    align-items: flex-start;
+  }
+
+  .landing-flow-connector-h { display: block; }
+  .landing-flow-connector-v { display: none; }
+}
+
+.landing-flow-connector-h {
+  flex: 1;
+  min-width: 28px;
+  height: 2px;
+  margin-top: 34px;
+  align-self: flex-start;
+}
+
+.landing-flow-connector-v {
+  width: 2px;
+  height: 28px;
+  margin: 4px 0 4px 29px;
+}
+
+/* Navbar responsive collapse: full link row + CTA on desktop, a single
+   hamburger trigger below the breakpoint. */
+.landing-nav-hamburger {
+  display: none !important;
+}
+
+@media (max-width: 860px) {
+  .landing-nav-desktop,
+  .landing-nav-cta {
+    display: none !important;
+  }
+
+  .landing-nav-hamburger {
+    display: inline-flex !important;
+  }
+}

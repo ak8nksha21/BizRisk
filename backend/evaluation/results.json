@@ -1,0 +1,175 @@
+{
+  "results": [
+    {
+      "case_id": "L1",
+      "description": "Single verified source, GST active, no conflicts.",
+      "ground_truth": "LEGITIMATE",
+      "risk_score": 0,
+      "risk_level": "LOW",
+      "assessment_status": "COMPLETED",
+      "merchant_decision": "APPROVE",
+      "predicted_label": "LEGITIMATE"
+    },
+    {
+      "case_id": "L2",
+      "description": "GST + MCA agree on status and legal name.",
+      "ground_truth": "LEGITIMATE",
+      "risk_score": 0,
+      "risk_level": "LOW",
+      "assessment_status": "COMPLETED",
+      "merchant_decision": "APPROVE",
+      "predicted_label": "LEGITIMATE"
+    },
+    {
+      "case_id": "L3",
+      "description": "GST + company website agree on address and business activity.",
+      "ground_truth": "LEGITIMATE",
+      "risk_score": 0,
+      "risk_level": "LOW",
+      "assessment_status": "COMPLETED",
+      "merchant_decision": "APPROVE",
+      "predicted_label": "LEGITIMATE"
+    },
+    {
+      "case_id": "L4",
+      "description": "Recently registered (under a year) but otherwise clean -- a low-severity signal alone.",
+      "ground_truth": "LEGITIMATE",
+      "risk_score": 5,
+      "risk_level": "LOW",
+      "assessment_status": "COMPLETED",
+      "merchant_decision": "APPROVE",
+      "predicted_label": "LEGITIMATE"
+    },
+    {
+      "case_id": "L5",
+      "description": "GST and EPFO records for distinct address types, both clean.",
+      "ground_truth": "LEGITIMATE",
+      "risk_score": 0,
+      "risk_level": "LOW",
+      "assessment_status": "COMPLETED",
+      "merchant_decision": "APPROVE",
+      "predicted_label": "LEGITIMATE"
+    },
+    {
+      "case_id": "L6",
+      "description": "Same registered address across sources, only superficial abbreviation differences (Road vs Rd).",
+      "ground_truth": "LEGITIMATE",
+      "risk_score": 0,
+      "risk_level": "LOW",
+      "assessment_status": "COMPLETED",
+      "merchant_decision": "APPROVE",
+      "predicted_label": "LEGITIMATE"
+    },
+    {
+      "case_id": "L7",
+      "description": "GST + MCA agree on active status and legal name.",
+      "ground_truth": "LEGITIMATE",
+      "risk_score": 0,
+      "risk_level": "LOW",
+      "assessment_status": "COMPLETED",
+      "merchant_decision": "APPROVE",
+      "predicted_label": "LEGITIMATE"
+    },
+    {
+      "case_id": "L8",
+      "description": "A discovered candidate record matches the target's own GSTIN exactly (clean entity resolution).",
+      "ground_truth": "LEGITIMATE",
+      "risk_score": 0,
+      "risk_level": "LOW",
+      "assessment_status": "COMPLETED",
+      "merchant_decision": "APPROVE",
+      "predicted_label": "LEGITIMATE"
+    },
+    {
+      "case_id": "S1",
+      "description": "Company registration struck off.",
+      "ground_truth": "SUSPICIOUS",
+      "risk_score": 35,
+      "risk_level": "MODERATE",
+      "assessment_status": "COMPLETED",
+      "merchant_decision": "APPROVE_WITH_MONITORING",
+      "predicted_label": "SUSPICIOUS"
+    },
+    {
+      "case_id": "S2",
+      "description": "Legal name conflicts between GST and MCA records.",
+      "ground_truth": "SUSPICIOUS",
+      "risk_score": 25,
+      "risk_level": "LOW",
+      "assessment_status": "COMPLETED",
+      "merchant_decision": "APPROVE",
+      "predicted_label": "LEGITIMATE"
+    },
+    {
+      "case_id": "S3",
+      "description": "GST registration inactive.",
+      "ground_truth": "SUSPICIOUS",
+      "risk_score": 30,
+      "risk_level": "LOW",
+      "assessment_status": "COMPLETED",
+      "merchant_decision": "APPROVE",
+      "predicted_label": "LEGITIMATE"
+    },
+    {
+      "case_id": "S4",
+      "description": "Registered address and business activity both conflict across sources.",
+      "ground_truth": "SUSPICIOUS",
+      "risk_score": 20,
+      "risk_level": "LOW",
+      "assessment_status": "COMPLETED",
+      "merchant_decision": "APPROVE",
+      "predicted_label": "LEGITIMATE"
+    },
+    {
+      "case_id": "S5",
+      "description": "Company dissolved AND legal name conflicts across sources.",
+      "ground_truth": "SUSPICIOUS",
+      "risk_score": 60,
+      "risk_level": "MODERATE",
+      "assessment_status": "COMPLETED",
+      "merchant_decision": "APPROVE_WITH_MONITORING",
+      "predicted_label": "SUSPICIOUS"
+    },
+    {
+      "case_id": "S6",
+      "description": "Company under liquidation AND registered address conflicts across sources.",
+      "ground_truth": "SUSPICIOUS",
+      "risk_score": 45,
+      "risk_level": "MODERATE",
+      "assessment_status": "COMPLETED",
+      "merchant_decision": "APPROVE_WITH_MONITORING",
+      "predicted_label": "SUSPICIOUS"
+    },
+    {
+      "case_id": "S7",
+      "description": "GST cancelled, company struck off, AND legal name conflicts -- multiple compounding red flags.",
+      "ground_truth": "SUSPICIOUS",
+      "risk_score": 90,
+      "risk_level": "VERY_HIGH",
+      "assessment_status": "COMPLETED",
+      "merchant_decision": "REJECT_OR_ESCALATE",
+      "predicted_label": "SUSPICIOUS"
+    },
+    {
+      "case_id": "S8",
+      "description": "Discovered candidate's GSTIN conflicts with the target's own GSTIN, with no name match -- conflicting statutory identity.",
+      "ground_truth": "SUSPICIOUS",
+      "risk_score": 0,
+      "risk_level": "LOW",
+      "assessment_status": "COMPLETED",
+      "merchant_decision": "MANUAL_REVIEW",
+      "predicted_label": "SUSPICIOUS"
+    }
+  ],
+  "metrics": {
+    "n_cases": 16,
+    "tp": 5,
+    "tn": 8,
+    "fp": 0,
+    "fn": 3,
+    "precision": 1.0,
+    "recall": 0.625,
+    "false_positive_cost_per_case": 1,
+    "false_positive_cost": 0
+  }
+}
