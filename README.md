@@ -1,70 +1,94 @@
-# BizRisk — Business Due Diligence & Merchant Risk Agent
+# BizRisk — AI-Powered Merchant Business Verification & Risk Agent
 
 [![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
 [![FastAPI](https://img.shields.io/badge/backend-FastAPI-009688.svg)](https://fastapi.tiangolo.com)
 [![LangGraph](https://img.shields.io/badge/orchestration-LangGraph-FF6F00.svg)](https://github.com/langchain-ai/langgraph)
 [![Next.js 16](https://img.shields.io/badge/frontend-Next.js%2016-black.svg)](https://nextjs.org)
 [![PostgreSQL](https://img.shields.io/badge/database-PostgreSQL%2016-336791.svg)](https://www.postgresql.org)
-[![Test Suite](https://img.shields.io/badge/tests-917%20passed-brightgreen.svg)](#13-testing--verification)
+[![Test Suite](https://img.shields.io/badge/tests-917%20passed-brightgreen.svg)](#testing--verification)
 
-> BizRisk helps fintech platforms verify business legitimacy and detect suspicious merchant identity signals before financial losses occur. It researches businesses across official websites, government portals, and independent business registries, resolves conflicting identities, validates evidence, calculates a deterministic risk score, and produces an actionable merchant decision such as APPROVE, APPROVE_WITH_MONITORING, or MANUAL_REVIEW.
->
-> The core idea is simple: before a fintech trusts a merchant, it should be able to trust the business behind it.
+> **Before a fintech trusts a merchant, can it actually trust the business behind it?**
+
+BizRisk helps fintech platforms verify business legitimacy and detect suspicious merchant identity signals **before financial losses occur**.
+
+It researches businesses across official websites, government portals, and independent business registries, resolves conflicting identities, validates evidence, calculates a deterministic risk score, and produces an actionable merchant decision such as:
+
+- `APPROVE`
+- `APPROVE_WITH_MONITORING`
+- `MANUAL_REVIEW`
+- `REJECT_OR_ESCALATE`
+
+The core idea is simple:
+
+> **Find the right information. Verify that it belongs to the right business. Make uncertainty actionable.**
 
 ---
 
 ## Table of Contents
-1. [Why BizRisk](#1-why-bizrisk)
-2. [Razorpay AI Risk Manager Fit](#2-razorpay-ai-risk-manager-fit)
-3. [Core Workflow](#3-core-workflow)
-4. [Multi-Source Browser Research](#4-multi-source-browser-research)
-5. [Evidence Validation](#5-evidence-validation)
-6. [Entity Resolution & Identity Protection](#6-entity-resolution--identity-protection)
-7. [Deterministic Risk Engine & Decisions](#7-deterministic-risk-engine--decisions)
-8. [Role of the LLM](#8-role-of-the-llm)
-9. [Human-in-the-Loop & Uncertainty](#9-human-in-the-loop--uncertainty)
-10. [LangGraph Technical Architecture](#10-langgraph-technical-architecture)
-11. [Frontend & Analyst Workspace](#11-frontend--analyst-workspace)
-12. [Evaluation & Benchmark Results](#12-evaluation--benchmark-results)
-13. [Testing & Verification](#13-testing--verification)
-14. [Technology Stack](#14-technology-stack)
-15. [Quickstart & Setup Guide](#15-quickstart--setup-guide)
-16. [Authentication & Security Scope](#16-authentication--security-scope)
-17. [Known Technical Limitations](#17-known-technical-limitations)
-18. [Demo Flow & Scenarios](#18-demo-flow--scenarios)
+1. [Why BizRisk](#why-bizrisk)
+2. [Razorpay AI Risk Manager Fit](#razorpay-ai-risk-manager-fit)
+3. [Core Workflow](#core-workflow)
+4. [Multi-Source Browser Research](#multi-source-browser-research)
+5. [Evidence Validation](#evidence-validation)
+6. [Entity Resolution & Identity Protection](#entity-resolution--identity-protection)
+7. [Deterministic Risk Engine & Decisions](#deterministic-risk-engine--decisions)
+8. [Role of the LLM](#role-of-the-llm)
+9. [Human-in-the-Loop & Uncertainty](#human-in-the-loop--uncertainty)
+10. [LangGraph Technical Architecture](#langgraph-technical-architecture)
+11. [Frontend & Analyst Workspace](#frontend--analyst-workspace)
+12. [Evaluation & Benchmark Results](#evaluation--benchmark-results)
+13. [Testing & Verification](#testing--verification)
+14. [Technology Stack](#technology-stack)
+15. [Quickstart & Setup Guide](#quickstart--setup-guide)
+16. [Authentication & Security Scope](#authentication--security-scope)
+17. [Known Technical Limitations](#known-technical-limitations)
+18. [Demo Flow & Scenarios](#demo-flow--scenarios)
 
 ---
 
-## 1. Why BizRisk
+## Why BizRisk
 
-Payment aggregators and fintech platforms face critical compliance, operational, and financial challenges when onboarding new merchants:
+Merchant verification often requires an analyst to manually check multiple government portals, company websites, and independent business registries.
 
-- **Fragmented Verification Sources**: Verifying a single merchant requires cross-referencing multiple government portals, company websites, corporate filings, and commercial registries.
-- **Unreliable Web Environments**: Official sources are frequently unavailable, rate-limited, bot-blocked, or out-of-date.
-- **Similar Name Ambiguity**: General search engines routinely surface information for a completely different company sharing a similar legal or trade name.
-- **Manual Overhead**: Human analysts spend hours manually copying identifiers, searching portals, comparing PDF filings, and documenting evidence.
-- **The Core Challenge**: The difficult problem is not just finding information; it is determining whether the information actually belongs to the merchant being investigated.
+The challenge is not simply finding information.
 
-**BizRisk** automates this due diligence lifecycle. It conducts deep multi-source research, extracts and validates structured evidence, strictly isolates wrong-company data through entity resolution, evaluates deterministic risk rules, and derives an actionable onboarding decision.
+Web sources can return:
 
----
+- noisy or incomplete pages
+- blocked or CAPTCHA-protected portals
+- inconsistent business names
+- conflicting registration information
+- search results belonging to another company with a similar name
 
-## 2. Razorpay AI Risk Manager Fit
+For a human investigator, manually cross-checking all of this is slow and error-prone.
 
-BizRisk is built specifically for the **Razorpay AI Risk Manager** challenge, targeting **Pre-Onboarding Merchant Due Diligence, Identity Reconciliation, and Business Legitimacy Verification**:
-
-| Operational Dimension | Razorpay AI Risk Manager Requirement | BizRisk Solution |
-|---|---|---|
-| **Merchant Legitimacy** | Verify that the applicant is a legitimate, actively registered business entity | Multi-tier browser research across statutory portals, official domains, and independent business registries |
-| **Identity Discrepancy Detection** | Detect conflicting registrations, adverse company statuses, or mismatched names | Multi-field entity resolution with hard statutory identifier conflict guards |
-| **Audit-Ready Risk Scoring** | Produce explainable, deterministic risk scores free from model hallucination | 100% deterministic rule engine; LLM is restricted to narrative prose generation |
-| **Analyst Efficiency** | Streamline complex investigations and handle blocked/uncertain sources gracefully | Automated QA feedback loops, real-time SSE telemetry, and Human-in-the-Loop (HITL) browser canvas |
-
-> **Scope Boundary**: BizRisk focuses on **merchant entity due diligence before onboarding**. It is not a transaction-level card fraud scoring or real-time payment authorization system.
+**BizRisk approaches the problem like a risk analyst:** dynamically research the merchant, validate the evidence, verify the entity, evaluate risk, and produce an actionable decision.
 
 ---
 
-## 3. Core Workflow
+## Razorpay AI Risk Manager Fit
+
+BizRisk is designed for the **Razorpay Buildathon — AI Risk Manager track**, focusing on the decision that happens **before financial loss**: whether a merchant business can be trusted during onboarding.
+
+| Risk Manager Need | BizRisk |
+|---|---|
+| Verify merchant legitimacy | Researches official, government, and independent registry sources |
+| Detect identity discrepancies | Resolves entities using GSTIN, CIN, legal name, website, and location |
+| Prevent wrong-company contamination | Rejects unrelated, conflicting, or contaminated evidence |
+| Handle unreliable web sources | Uses multi-source browser research with source-status tracking |
+| Make explainable decisions | Uses a deterministic risk engine and decision matrix |
+| Escalate uncertainty | Explicit `INSUFFICIENT_EVIDENCE` and `CONFLICTING_IDENTITY` paths |
+| Reduce analyst effort | Automated research, QA, reporting, SSE telemetry, and HITL browser workflows |
+
+### Scope
+
+BizRisk focuses on **merchant/business verification and pre-onboarding risk intelligence**.
+
+It is **not** a transaction-level card fraud detection or real-time payment authorization system.
+
+---
+
+## Core Workflow
 
 The end-to-end investigation pipeline follows a structured, evidence-backed narrative:
 
@@ -82,7 +106,7 @@ Merchant Input ──► Browser Research ──► Evidence Validation ──�
 
 ---
 
-## 4. Multi-Source Browser Research
+## Multi-Source Browser Research
 
 > **Core Principle**: BizRisk does not depend on a single database or blindly trust the first search result.
 
@@ -106,7 +130,7 @@ Research tasks are coordinated by `BrowserResearchAgent` (`backend/app/agents/br
 
 ---
 
-## 5. Evidence Validation
+## Evidence Validation
 
 > **Core Principle**: The risk engine receives validated merchant evidence rather than raw web pages.
 
@@ -121,7 +145,7 @@ Raw web content is filtered through rigorous validation gates (`backend/app/extr
 
 ---
 
-## 6. Entity Resolution & Identity Protection
+## Entity Resolution & Identity Protection
 
 > **Core Insight**: The difficult part was knowing whether the information actually belonged to the merchant.
 
@@ -146,7 +170,7 @@ BizRisk cross-evaluates candidate records against target merchant attributes acr
 
 ---
 
-## 7. Deterministic Risk Engine & Decisions
+## Deterministic Risk Engine & Decisions
 
 BizRisk separates evidence intelligence from risk evaluation. The risk engine (`backend/app/risk/engine.py`) operates entirely on deterministic, audit-traceable logic configured via `backend/app/risk/config.yaml`:
 
@@ -195,7 +219,7 @@ Derived in `backend/app/services/report.py`:
 
 ---
 
-## 8. Role of the LLM
+## Role of the LLM
 
 BizRisk uses language models strictly where natural language processing is needed, maintaining a complete separation between narrative generation and deterministic decisioning:
 
@@ -215,7 +239,7 @@ BizRisk uses language models strictly where natural language processing is neede
 
 ---
 
-## 9. Human-in-the-Loop & Uncertainty
+## Human-in-the-Loop & Uncertainty
 
 > **Core Philosophy**: Make uncertainty actionable instead of hiding it.
 
@@ -236,7 +260,7 @@ When live sources encounter CAPTCHAs, bot checks, or blocked workflows, BizRisk 
 
 ---
 
-## 10. LangGraph Technical Architecture
+## LangGraph Technical Architecture
 
 The core investigation agent is orchestrated as a stateful graph (`StateGraph` in `backend/app/graph/workflow.py`):
 
@@ -272,7 +296,7 @@ The core investigation agent is orchestrated as a stateful graph (`StateGraph` i
 
 ---
 
-## 11. Frontend & Analyst Workspace
+## Frontend & Analyst Workspace
 
 Built with **Next.js 16 (App Router)** and **React 19** in `frontend/`:
 
@@ -289,7 +313,7 @@ Built with **Next.js 16 (App Router)** and **React 19** in `frontend/`:
 
 ---
 
-## 12. Evaluation & Benchmark Results
+## Evaluation & Benchmark Results
 
 Located in `backend/evaluation/` (`run_evaluation.py`, `dataset.py`, `results.json`) and validated in the test suite:
 
@@ -335,7 +359,7 @@ False-Positive Cost: 0 cost units (0 FP x 1 cost unit/FP)
 
 ---
 
-## 13. Testing & Verification
+## Testing & Verification
 
 The codebase is thoroughly tested across unit, integration, security, and evaluation suites:
 
@@ -354,7 +378,7 @@ cd frontend && npm test
 
 ---
 
-## 14. Technology Stack
+## Technology Stack
 
 ### Backend
 - **Framework**: FastAPI (Python 3.11+) with Uvicorn
@@ -371,7 +395,7 @@ cd frontend && npm test
 
 ---
 
-## 15. Quickstart & Setup Guide
+## Quickstart & Setup Guide
 
 ### Prerequisites
 - Docker (for PostgreSQL database)
@@ -406,7 +430,7 @@ npm run dev
 
 ---
 
-## 16. Authentication & Security Scope
+## Authentication & Security Scope
 
 - **Authorization Model**: Bearer Token (`Authorization: Bearer <user_id>`).
 - **User Data Isolation**: The bearer token string is treated directly as the `user_id`. `get_owned_investigation` enforces strict tenant scoping, returning 404 for unowned investigations (`backend/tests/test_security_user_isolation.py`).
@@ -415,7 +439,7 @@ npm run dev
 
 ---
 
-## 17. Known Technical Limitations
+## Known Technical Limitations
 
 1. **In-Process Background Execution**: Investigations run asynchronously within the FastAPI server process (`BackgroundTasks`). If the server restarts, in-flight jobs remain at non-terminal statuses (recoverable via `/resume` endpoint or `/incomplete` list).
 2. **Live Government Portals**: Direct HTTP scraping of `services.gst.gov.in`, `mca.gov.in`, and `epfindia.gov.in` frequently encounters CAPTCHAs, bot blocks, or dynamic session tokens; live runs rely on third-party registries (`quickcompany.in`, `tofler.in`, `zaubacorp.com`) or HITL solver intervention.
@@ -424,7 +448,7 @@ npm run dev
 
 ---
 
-## 18. Demo Flow & Scenarios
+## Demo Flow & Scenarios
 
 ### Scenario 1 — Legitimate Merchant
 1. Submit a merchant on `/investigate` with consistent legal name and active GSTIN/CIN.
