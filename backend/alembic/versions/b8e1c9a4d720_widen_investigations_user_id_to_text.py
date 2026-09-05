@@ -5,7 +5,7 @@ The original VARCHAR(100) column caused StringDataRightTruncation on
 investigation creation. Widen it to an unbounded text type.
 
 Revision ID: b8e1c9a4d720
-Revises: 11a09897a203
+Revises: b7c3e9f21a04
 Create Date: 2026-09-03 00:00:00.000000
 
 """
@@ -17,7 +17,7 @@ import sqlalchemy as sa
 
 # revision identifiers, used by Alembic.
 revision: str = 'b8e1c9a4d720'
-down_revision: Union[str, Sequence[str], None] = '11a09897a203'
+down_revision: Union[str, Sequence[str], None] = 'b7c3e9f21a04'
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
 
