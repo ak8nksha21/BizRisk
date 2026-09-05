@@ -7,6 +7,8 @@ pydantic-settings
 SQLAlchemy
 psycopg[binary]
 alembic
+python-dateutil
+pyyaml
 
 playwright
 

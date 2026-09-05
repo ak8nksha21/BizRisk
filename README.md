@@ -132,7 +132,7 @@ Research tasks are coordinated by `BrowserResearchAgent` (`backend/app/agents/br
 Raw web content is filtered through rigorous validation gates (`backend/app/extraction/` and `backend/app/research/`):
 
 - **Semantic Validation**: Parses and verifies structured data formats (registration numbers, incorporation dates, business status codes, registered addresses).
-- **Entity Relationship Checks**: Verifies whether extracted claims originate from a direct official property, an accredited registry, or an unverified third party.
+- **Entity Relationship Checks**: Verifies whether extracted claims originate from a direct official property, an independent registry, or an unverified third party.
 - **Placeholder & Error Rejection**: Discards placeholder values, empty strings, and crawler error flags (`NOT_FOUND`, `UNAVAILABLE`, `BLOCKED`, `ACCESS_DENIED`).
 - **Contaminated & Boilerplate Filtering**: Strips HTML markup, navigation headers, cookie banners, and noisy advertising content.
 - **Confidence Gate**: Enforces minimum extraction confidence for admission, requiring verified confidence ($\ge 0.70$) for scoring weight eligibility.
@@ -244,7 +244,7 @@ When live sources encounter CAPTCHAs, bot checks, or blocked workflows, BizRisk 
 [ Automated Browser ] ──(CAPTCHA / Bot Block)──► [ Pause Workflow & Preserve Session ]
                                                                  │
                                                                  ▼
-[ Resume Execution ] ◄──(Analyst Solves / Submits)──◄ [ Live Browser Canvas in UI ]
+[ Resume Execution ] ◄──(Analyst Resolves / Submits)──◄ [ Live Browser Canvas in UI ]
 ```
 
 ### HITL Capabilities
@@ -299,7 +299,7 @@ Built with **Next.js 16 (App Router)** and **React 19** in `frontend/`:
 - **Analyst Dashboard (`/dashboard`)**: Portfolio overview with KPI summary cards (Total, Approved, Manual Review, High Risk) and incomplete investigation recovery tracking.
 - **Live Investigation Workspace (`/investigations/[id]`)**:
   - Real-time progress stepper with SSE live event stream.
-  - Interactive HITL remote browser canvas for solving portal challenges.
+  - Interactive HITL remote browser canvas for resolving portal challenges.
   - Structured evidence ledger with authority badges, source links, and confidence bars.
   - Risk breakdown with category gauges and active signal cards.
   - Side-by-side entity resolution comparison table.
@@ -437,7 +437,7 @@ npm run dev
 ## 17. Known Technical Limitations
 
 1. **In-Process Background Execution**: Investigations run asynchronously within the FastAPI server process (`BackgroundTasks`). If the server restarts, in-flight jobs remain at non-terminal statuses (recoverable via `/resume` endpoint or `/incomplete` list).
-2. **Live Government Portals**: Direct HTTP scraping of `services.gst.gov.in`, `mca.gov.in`, and `epfindia.gov.in` frequently encounters CAPTCHAs, bot blocks, or dynamic session tokens; live runs rely on third-party registries (`quickcompany.in`, `tofler.in`, `zaubacorp.com`) or HITL solver intervention.
+2. **Live Government Portals**: Direct HTTP scraping of `services.gst.gov.in`, `mca.gov.in`, and `epfindia.gov.in` frequently encounters CAPTCHAs, bot blocks, or dynamic session tokens; live runs rely on third-party registries (`quickcompany.in`, `tofler.in`, `zaubacorp.com`) or human intervention.
 3. **Unused Infrastructure Components**: `REDIS_URL` in `.env.example`, the Redis container in `docker-compose.yml`, and `backend/worker/` are placeholders.
 4. **LLM Provider Implementations**: Concrete SDK integration is implemented for `mock` and `anthropic`. OpenAI and Gemini raise provider exceptions if configured without mock mode.
 
